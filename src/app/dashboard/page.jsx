@@ -10,32 +10,6 @@ import Image from 'next/image';
 const Dashboard = () => {
   const session = useSession();
   const router = useRouter();
-  // const [data, setData] = useState([]);
-  // const [error, setError] = useState(false);
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
-
-  //     if (!res.ok) {
-  //       setError(true);
-  //     }
-
-  //     const data = await res.json();
-
-  //     setData(data);
-  //     setIsLoading(false);
-  //   };
-  //   getData();
-  // }, []);
-
-  if (session.status === 'loading') {
-    return <p>Loading</p>;
-  }
-  if (session.status == 'unauthenticated') {
-    router?.push('/dashboard/login');
-  }
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -43,6 +17,13 @@ const Dashboard = () => {
     `/api/posts?username=${session?.data?.user.name}`,
     fetcher,
   );
+
+  if (session.status === 'loading') {
+    return <p>Loading</p>;
+  }
+  if (session.status == 'unauthenticated') {
+    router?.push('/dashboard/login');
+  }
 
   const handleDelete = async (id) => {
     try {
